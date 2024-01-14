@@ -3,11 +3,8 @@
 
 let productsDom = document.querySelector(".products");
 
-// Check if products are already in localStorage
-let storedProducts = JSON.parse(localStorage.getItem("products"));
-
 // Use storedProducts if available, otherwise use productsDB
-let products = storedProducts || productsDB;
+let products = JSON.parse(localStorage.getItem("products")) || productsDB;
 
       function drawProductsUi(products =[]){
       let productsUI = products.map( (item) => {
