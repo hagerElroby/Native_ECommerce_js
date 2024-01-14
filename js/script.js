@@ -45,11 +45,8 @@ drawProductsUi(JSON.parse(localStorage.getItem("products")) || products);
 //add to cart
 
 function addedToCart(id){
-      if(localStorage.getItem("username")){
-<<<<<<< HEAD
-=======
+      if(localStorage.getItem("username"))
             // let products = JSON.parse(localStorage.getItem("products")) || products ;
->>>>>>> c4b25544a0c0c9b51531c2dd686569e59834576c
             let products = JSON.parse(localStorage.getItem("products")) || productsDB ;
             let product = products.find( (item) => item.id === id);
             let isProductInCart = addedItem.some((i) => i.id === product.id);
