@@ -42,7 +42,7 @@ drawProductsUi(JSON.parse(localStorage.getItem("products")) || products);
 //add to cart
 
 function addedToCart(id){
-      if(localStorage.getItem("username"))
+      if(localStorage.getItem("username")){
             let products = JSON.parse(localStorage.getItem("products")) || products ;
             let product = products.find( (item) => item.id === id);
             let isProductInCart = addedItem.some((i) => i.id === product.id);
