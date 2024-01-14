@@ -40,4 +40,4 @@ let productsDB = [
 let profile = "images/profile-img.png"
 
 localStorage.setItem("profilePhoto" ,profile);
-localStorage.setItem("products" , JSON.stringify(productsDB));
+// localStorage.setItem("products" , JSON.stringify(productsDB));
