@@ -4,7 +4,7 @@
 let productsDom = document.querySelector(".products");
 
 // Use storedProducts if available, otherwise use productsDB
-let products = JSON.parse(localStorage.getItem("products")) || productsDB;
+let products =  productsDB;
 
       function drawProductsUi(products =[]){
       let productsUI = products.map( (item) => {
