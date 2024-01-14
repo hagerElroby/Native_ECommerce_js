@@ -40,14 +40,42 @@ function editProduct(id){
 }
 
 
-//delete product 
-function deleteProduct(id){
+// //delete product 
+// function deleteProduct(id){
+//       let products = JSON.parse(localStorage.getItem("products")) || productsDB;
+//       let myProducts = products.filter((item) => item.isMe === "Y");
+//       let clickedItem = myProducts.find((i) => i.id === id);
+
+//   // Check if the clicked item exists before filtering
+//   if (clickedItem) {
+//     let filtered = myProducts.filter((i) => i.id !== id);
+//     products = products.filter((i) => i.id !== clickedItem.id);
+//     localStorage.setItem("products", JSON.stringify(products));
+//     drawProductsUi(filtered);
+//   }
+// }
+
+
+// delete product
+function deleteProduct(id) {
       let products = JSON.parse(localStorage.getItem("products")) || productsDB;
       let myProducts = products.filter((item) => item.isMe === "Y");
-      let filtered = myProducts.filter((i) => i.id !== id);
-
       let clickedItem = myProducts.find((i) => i.id === id);
-      products = products.filter((i) => i.id !== clickedItem.id);
-      localStorage.setItem("products" , JSON.stringify(products));
-      drawProductsUi(filtered);
-}
+    
+      // Check if the clicked item exists before filtering
+      if (clickedItem) {
+        let filtered = myProducts.filter((i) => i.id !== id);
+        products = products.filter((i) => i.id !== clickedItem.id);
+        localStorage.setItem("products", JSON.stringify(products));
+    
+        // Check if there are any products left
+        if (filtered.length > 0) {
+          drawProductsUi(filtered);
+        } else {
+          // No products left, update UI accordingly
+          productsDom.innerHTML = "";
+          noProductsDom.innerHTML = "No Products !!";
+        }
+      }
+    }
+    

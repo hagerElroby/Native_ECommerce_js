@@ -2,7 +2,12 @@
 /*--Define Products---*/
 
 let productsDom = document.querySelector(".products");
-let products = productsDB;
+
+// Check if products are already in localStorage
+let storedProducts = JSON.parse(localStorage.getItem("products"));
+
+// Use storedProducts if available, otherwise use productsDB
+let products = storedProducts || productsDB;
 
       function drawProductsUi(products =[]){
       let productsUI = products.map( (item) => {
@@ -17,9 +22,9 @@ let products = productsDB;
                         <h2 onclick="saveItemData(${item.id})">${item.title}</h2>
                         <p>${item.desc}</p>
                         <span>Size: ${item.size}</span>
-                        ${item.isMe ==="Y" && "<button class='edit-product' onClick='editProduct(" +
+                        ${item.isMe =="Y" ? "<button class='edit-product' onClick='editProduct(" +
                         item.id +
-                        ")' >Edit Product</button>"}
+                        ")' >Edit Product</button>" : ""}
                        </div> 
                        <div class="product-item-actions">
                         <button class="add-to-cart" onClick=" addedToCart(${item.id})">Add To Cart</button>
@@ -43,7 +48,7 @@ function addedToCart(id){
       if(localStorage.getItem("username")){
             let products = JSON.parse(localStorage.getItem("products")) || products ;
             let product = products.find( (item) => item.id === id);
-            let isProductInCart = addedItem.some( (i) => i.id === product.id);
+            let isProductInCart = addedItem.some((i) => i.id === product.id);
             if(isProductInCart){
                    addedItem = addedItem.map((p) => {
                         if(p.id === product.id) p.qty +=1;
@@ -86,22 +91,38 @@ function saveItemData(id){
       window.location = "cartDetails.html"
 }
 
-// search function 
 
-function search (title , myArr){
-      let arr = myArr.filter( (item) => item.title.toLowerCase().indexOf(title.toLowerCase()) !== -1)
-      drawProductsUi(arr)
-}
+// function search (title , myArr){
+//       let arr = myArr.filter( 
+//             (item) => item.title.toLowerCase().indexOf(title.toLowerCase()) !== -1)
+//       drawProductsUi(arr)
+// }
+
+// search function 
+function search(query, myArr) {
+      let arr = myArr.filter(item => {
+        const titleMatch = item.title.toLowerCase().includes(query.toLowerCase());
+        const descMatch = item.desc.toLowerCase().includes(query.toLowerCase());
+        const sizeMatch = item.size.toLowerCase().includes(query.toLowerCase());
+    
+        return titleMatch || descMatch || sizeMatch;
+      });
+    
+      drawProductsUi(arr);
+    }
+    
 
 let searchInput = document.getElementById("search");
 
 searchInput.addEventListener("keyup" , function(e){
-
-            search(e.target.value , JSON.parse(localStorage.getItem("products")));
-
-      if(e.target.value.trim() === "")
-         drawProductsUi(JSON.parse(localStorage.getItem("products")));   
-      
+            const query = e.target.value.trim();
+            if (query === "") {
+                  // If the input is empty, show all products
+                  drawProductsUi(JSON.parse(localStorage.getItem("products")));
+                  return;
+            }
+            // If there is a query, perform the search
+            search(query, JSON.parse(localStorage.getItem("products")));
 });
 
 
@@ -109,24 +130,55 @@ searchInput.addEventListener("keyup" , function(e){
 let favoriteItems = localStorage.getItem("productsFavorite")
 ? JSON.parse(localStorage.getItem("productsFavorite")) : [];
 
-function addToFavorite(id){
-      if(localStorage.getItem("username")) {
-            let product = products.find((item) => item.id === id) ;
-            product.liked = true ;
-            favoriteItems = [...favoriteItems , product];
-            let uniqueProducts = getUniqueArr(favoriteItems , "id");
-            localStorage.setItem("productsFavorite" , JSON.stringify(uniqueProducts));
-            products.map((item) => {
-             if(item.id === product.id){
-                  item.liked = true;
-             }
-             });
-             localStorage.setItem("products" , JSON.stringify(products));
-             drawProductsUi(products);
-      }else{
-            window.location = "login.html"
+// function addToFavorite(id){
+//       if(localStorage.getItem("username")) {
+//             let product = products.find((item) => item.id === id) ;
+//             product.liked = true ;
+//             favoriteItems = [...favoriteItems , product];
+//             let uniqueProducts = getUniqueArr(favoriteItems , "id");
+//             localStorage.setItem("productsFavorite" , JSON.stringify(uniqueProducts));
+//             products.map((item) => {
+//              if(item.id === product.id){
+//                   item.liked = true;
+//              }
+//             //  return item;
+//              });
+//              localStorage.setItem("products" , JSON.stringify(products));
+//              drawProductsUi(products);
+//       }else{
+//             window.location = "login.html"
+//       }
+// }
+
+function addToFavorite(id) {
+      if (localStorage.getItem("username")) {
+        let products = JSON.parse(localStorage.getItem("products")) || products;
+        let product = products.find((item) => item.id === id);
+    
+        if (!product.liked) {
+          product.liked = true;
+          favoriteItems = [...favoriteItems, product];
+          let uniqueProducts = getUniqueArr(favoriteItems, "id");
+          localStorage.setItem("productsFavorite", JSON.stringify(uniqueProducts));
+    
+          products.forEach((item) => {
+            if (item.id === product.id) {
+              item.liked = true;
+            }else{
+                  item.liked = false;
+            }
+          });
+    
+          localStorage.setItem("products", JSON.stringify(products));
+          drawProductsUi(products);
+        } else {
+          console.log("Product already in favorites");
+        }
+      } else {
+        window.location = "login.html";
       }
-}
+    }
+    
 
 //filter products by size
 let sizeFilter = document.getElementById("size-filter");

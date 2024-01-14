@@ -46,7 +46,8 @@ function createProductFun(e){
                   window.location= "index.html"
             } , 500)
       }else{
-            alert("Enter data...");
+            // alert("Enter data...");
+            Swal.fire("Enter data...");
       }
 }
 
@@ -57,12 +58,14 @@ function createProductFun(e){
       let types = ["image/jpeg" , "image/png"];
 
       if(types.indexOf(file.type) == -1) {
-            alert("Type not supported");
+            // alert("Type not supported");
+            Swal.fire("Type not supported");
             return;
       }
 
       if(file.size > 2 * 1024 * 1024){
-            alert("Image not excesd");
+            // alert("Image not excesd");
+            Swal.fire("Image not excesd");
             return;
       }
       getImageBase64(file)
@@ -77,6 +80,7 @@ function createProductFun(e){
        productImage = reader.result;
       };
       reader.onerror = function (){
-            alert("Error !!");
+            // alert("Error !!");
+            Swal.fire("Error !!");
       };
  }

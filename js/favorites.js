@@ -27,6 +27,8 @@ function drawFavoriteProductsUI( allProducts = []){
       productsDom.innerHTML = productsUI.join("");
 }
 drawFavoriteProductsUI();
+
+
 function removeItemFromFavorite(id){
       let productsFavorite = localStorage.getItem("productsFavorite");
       if(productsFavorite){

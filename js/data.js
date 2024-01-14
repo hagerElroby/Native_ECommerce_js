@@ -21,7 +21,7 @@ let productsDB = [
             id:3 ,
             title : 'glass item',
             desc : "Lorem ipsum dolor sit amet consectetur adipisicing elit" ,
-            size : "meduim" ,
+            size : "medium" ,
             imgUrl: "images/download (3).jpg" ,
             qty: 1 ,
             isMe : "N"
